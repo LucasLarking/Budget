@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 * {
-  box-sizing: content-box !important;
+  box-sizing: border-box !important;
 }
 
 /* @layer base {
