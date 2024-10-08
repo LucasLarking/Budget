@@ -31,7 +31,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const TestComponent = () => {
+const Expenses_over_time = () => {
   return (
     <>
       <div className="w-1/2 border border-black">
@@ -63,4 +63,4 @@ const TestComponent = () => {
   );
 };
 
-export default TestComponent;
+export default Expenses_over_time;

@@ -16,7 +16,7 @@ const MonthlyInvestments = () => {
           <div className="relative flex-1  mt-2 rounded bg-white">
          
         
-            <div className="bg-slate-200 m-1.5 px-3 py-2 rounded-lg">
+            <div className="bg-[#f4f4f5] m-1.5 px-3 py-2 rounded-lg">
               <div className="flex justify-between w-full">
                 <span className="mb-1 text-black text-sm block font-bold">
                   Google
@@ -26,7 +26,7 @@ const MonthlyInvestments = () => {
                 </span>
               </div>
             </div>
-            <div className="bg-slate-200 m-1.5 px-3 py-2 rounded-lg">
+            <div className="bg-[#f4f4f5] m-1.5 px-3 py-2 rounded-lg">
               <div className="flex justify-between w-full">
                 <span className="mb-1 text-black text-sm block font-bold">
                   Google
@@ -36,7 +36,7 @@ const MonthlyInvestments = () => {
                 </span>
               </div>
             </div>
-            <div className="bg-slate-00 m-1.5 px-3 py-2 rounded-lg">
+            <div className="bg-[#f4f4f5] m-1.5 px-3 py-2 rounded-lg">
               <div className="flex justify-between w-full">
                 <span className="mb-1 text-black text-sm block font-bold">
                   Google
