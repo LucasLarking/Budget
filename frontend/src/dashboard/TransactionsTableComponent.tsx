@@ -33,11 +33,53 @@ const TransactionsTableComponent = () => {
       'subcategory': 'Necessity',
       'total': '100'
     },
+    {
+      'date': '1 Mar',
+      'vendor': 'ica',
+      'category': 'Food',
+      'subcategory': 'Necessity',
+      'total': '100',
+    },
+    {
+      'date': '1 Mar',
+      'vendor': 'ica',
+      'category': 'Food',
+      'subcategory': 'Necessity',
+      'total': '100',
+    },
+    {
+      'date': '1 Mar',
+      'vendor': 'ica',
+      'category': 'Food',
+      'subcategory': 'Necessity',
+      'total': '100'
+    },
+    {
+      'date': '1 Mar',
+      'vendor': 'ica',
+      'category': 'Food',
+      'subcategory': 'Necessity',
+      'total': '100',
+    },
+    {
+      'date': '1 Mar',
+      'vendor': 'ica',
+      'category': 'Food',
+      'subcategory': 'Necessity',
+      'total': '100',
+    },
+    {
+      'date': '1 Mar',
+      'vendor': 'ica',
+      'category': 'Food',
+      'subcategory': 'Necessity',
+      'total': '100'
+    },
   
   ]
   return (
     <>
-      <div className="w-[900px] border-black border">
+      <div className="w-full h-[355px] border-4 overflow-auto no-scrollbar border-[#09B96D] bg-[#09B96D] ">
         <Table>
           <TableHeader>
             <TableRow>

@@ -59,15 +59,15 @@ const ExpenseCategories = () => {
   }, []);
   return (
     <>
-      <div className="w-[500px] border m-5 pr-5">
+      <div className="w-full h-auto border-4  border-[#09B96D] bg-[#]  pr-5 ">
         <div className="top px-5 pt-5">
           <h3 className="font-semibold text-lg">Dina Stora Utgifter</h3>
         </div>
         <div className="flex">
-          <div className="w-1 pb-0 flex-1 ">
+          <div className="w-1 pb-0 flex-1  max-w-80">
             <ChartContainer
               config={chartConfig}
-              className="aspect-square max-h-[250px]"
+              className="aspect-square max-h-[300px]"
             >
               <PieChart>
                 <ChartTooltip
@@ -121,7 +121,7 @@ const ExpenseCategories = () => {
                   <span className="text-lg font-semibold">{expenseObj.browser}</span>
                   <span className="text-lg font-medium" style={{ color: expenseObj.fill }}>24%</span>
                 </div>
-                <div className="text-base opacity-40">
+                <div className="text-base opacity-40 text-black">
                   12 300
                 </div>
               </div>

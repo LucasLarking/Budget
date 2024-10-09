@@ -24,3 +24,40 @@
     }
   }
    */
+
+.recharts-wrapper tspan {
+  fill: white;
+}
+
+.recharts-pie tspan {
+  fill: black;
+}
+
+.recharts-tooltip-wrapper {
+  background-color: #09B96D;
+  border-color: none !important;
+  padding: 5px;
+  color: white;
+}
+
+.recharts-tooltip-wrapper div {
+  border: none;
+}
+
+tr {
+  background-color: #09B96D;
+  background-color: #86efad;
+  border-bottom: 5px solid #09B96D !important;
+}
+
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}

@@ -23,6 +23,12 @@ const chartData = [
   { month: "April", desktop: 73 },
   { month: "May", desktop: 209 },
   { month: "June", desktop: 214 },
+  { month: "June", desktop: 24 },
+  { month: "June", desktop: 114 },
+  { month: "June", desktop: 24 },
+  { month: "June", desktop: 74 },
+  { month: "June", desktop: 214 },
+  { month: "June", desktop: 214 },
 ];
 const chartConfig = {
   desktop: {
@@ -34,27 +40,31 @@ const chartConfig = {
 const Expenses_over_time = () => {
   return (
     <>
-      <div className="w-1/2 border border-black">
-        <div className="mx-3">
-          <h3 className="font-semibold text-lg">Utgifter</h3>
-          <span>Uppdelat På Dagar</span>
+      {/* #09B96D */}
+      <div className="h-96 pb-4  bg-[#09B96D]   overscroll-hide relative  border ">
+        <div className="mt-4 ml-4">
+          <h3 className="font-semibold text-lg text-white">Utgifter</h3>
+          <span className="text-white">Uppdelat På Dagar</span>
         </div>
-        <div>
-          <ChartContainer config={chartConfig}>
+        <div className="relative h-full">
+          <ChartContainer config={chartConfig} className="  max-h-[80%] w-full">
             <BarChart accessibilityLayer data={chartData}>
               <CartesianGrid vertical={false} />
               <XAxis
+              className="text-white"
                 dataKey="month"
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
                 tickFormatter={(value) => value.slice(0, 3)}
+                // tick={{ fill: 'white' }}
+                
               />
               <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent hideLabel />}
               />
-              <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
+              <Bar dataKey="desktop" fill="#86efad" radius={8} />
             </BarChart>
           </ChartContainer>
         </div>
