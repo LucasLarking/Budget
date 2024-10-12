@@ -13,24 +13,22 @@ import ExpenseCategories from "./dashboard/ExpenseCategories";
 import TestComponent from "./dashboard/TestComponent";
 import TransactionsTableComponent from "./dashboard/TransactionsTableComponent";
 import NewDashboard from "./dashboard/NewDashboard";
+import NewHomePage from "./homepage/NewHomePage";
+import BlockHomePage from "./homepage/BlockHomePage";
+import BlockDashboard from "./homepage/BlockDashboard";
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <Layout />,
         children: [
-            {index: true, element: <HomePage />},
-            {path: "/dashboard", element: <DashboardPage />},
+            {index: true, element: <BlockHomePage />},
             {path: "/login", element: <LoginPage />},
-            {path: "/expensesovertime", element: <Expenses_over_time />},
-            {path: "/chad", element: <ChadDashboard />},
-            {path: "/monthlybudget", element: <MonthlyBudget />},
-            {path: "/totalsaved", element: <TotalSaved />},
-            {path: "/monthlyinvestments", element: <MonthlyInvestments />},
-            {path: "/expensecategories", element: <ExpenseCategories />},
             {path: "/test", element: <TestComponent />},
-            {path: "/transactions", element: <TransactionsTableComponent />},
             {path: "/newdashboard", element: <NewDashboard />},
+            {path: "/newhomepage", element: <NewHomePage />},
+            {path: "/block", element: <BlockHomePage />},
+            {path: "/blockdashboard", element: <BlockDashboard />},
         ]
 
     }

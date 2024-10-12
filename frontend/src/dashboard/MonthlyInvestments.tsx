@@ -1,15 +1,31 @@
-import React from "react";
+import { animate, motion, useMotionValue, useTransform } from "framer-motion";
+import React, { useEffect } from "react";
 
 const MonthlyInvestments = () => {
+  const count = useMotionValue(10000)
+  const rounded = useTransform(count, latest => Math.round(latest))
+
+  useEffect(() => {
+    const controls = animate(count, 27600, {
+      duration: 1,  // Set the duration to 5 seconds (increase or decrease as needed)
+      ease: "easeInOut",  // You can change this to any easing function you prefer
+    });
+
+    return () => controls.stop()
+  }, [])
+
   return (
     <>
       <div className="w-full h-full border-4  border-[#09B96D] pt-10 lg:px-3 pb-2 rounded row-span-3 flex flex-col justify-between">
-        <div className="px-3 lg:px-0">
+        <div className=" px-3 lg:px-0">
           <h3 className="text-black">Månadens Investeringar</h3>
-          <span className="text-[#09B96D] text-4xl font-bold">27 600 Kr</span>
+          <motion.div className="text-[#09B96D] text-4xl font-bold w-28 inline-block">
+            {rounded}
+          </motion.div>
+          <span className="text-[#09B96D] text-4xl font-bold">Kr</span>
         </div>
 
-        <div className="pt-10 flex flex-col h-4/5">
+        <div className=" flex flex-col h-[370px]  ">
           <button className="bg-[#09B96D] block p-2 text-sm text-white font-bold rounded mx-3 lg:mx-0">
             Lägg Till Investering
           </button>

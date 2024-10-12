@@ -79,9 +79,10 @@ const TransactionsTableComponent = () => {
   ]
   return (
     <>
-      <div className="w-full h-[355px] border-4 overflow-auto no-scrollbar border-[#09B96D] bg-[#09B96D] ">
+    
+      <div className="w-full h-[355px] overflow-auto no-scrollbar tablemethis ">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-[#09B96D] text-white">
             <TableRow>
               <TableHead className="">Datum</TableHead>
               <TableHead>Butik</TableHead>
