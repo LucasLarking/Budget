@@ -10,7 +10,7 @@ from django.db.models import Sum
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action
 
 from django.conf import settings
@@ -52,7 +52,7 @@ from .serializers import (
 class SubCategoryModelViewSet(viewsets.ModelViewSet):
     queryset = SubCategory.objects.all()
     serializer_class = SubCategoryModelSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
     @action(detail=False, methods=["get"])
