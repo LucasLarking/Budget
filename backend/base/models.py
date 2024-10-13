@@ -14,12 +14,12 @@ class SubCategory(models.Model):
 
 class Category(models.Model):
     # Morgage, Utilities, Phone
-    SubCategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+    # SubCategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     Category = models.CharField(max_length=255)
     SpendingLimit = models.IntegerField()
 
     def __str__(self) -> str:
-        return f"{self.Category} ({self.SubCategory.SubCategory})"
+        return f"{self.Category}"
 
 
 class Vendor(models.Model):
@@ -97,11 +97,11 @@ class DailyInvestmentValue(models.Model):
 
 class Transaction(models.Model):
     TransactionAmount = models.IntegerField()
-    Vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    Vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, null=True, blank=True)
     CreatedAt = models.DateField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"{self.TransactionAmount}kr på {self.Vendor.Vendor}"
+        return f"{self.TransactionAmount}kr på"
 
 
 class ReacurringTransaction(Transaction):

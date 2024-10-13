@@ -5,7 +5,7 @@ from .views import (
     CategoryModelViewSet,
     NetworthModelViewSet,
     SubCategoryModelViewSet,
-    VendoryModelViewset,
+    VendorModelViewset,
     SavingsGoalModelViewset,
     InvestmentGoalModelViewset,
     IncomeSourceModelViewset,
@@ -13,7 +13,7 @@ from .views import (
     InvestmentPurchaseModelViewSet,
     ReacurringInvestmentPurchaseModelViewSet,
     DailyInvestmentValueModelViewSet,
-    ExpenseModelViewSet,
+    TransactionModelViewSet,
     ReacurringTransactionModelViewSet,
 )
 
@@ -43,7 +43,7 @@ router.register(
     DailyInvestmentValueModelViewSet,
     basename="dailyinvestmentvalue",
 )
-router.register(r"expenses", ExpenseModelViewSet, basename="expense")
+router.register(r"transactions", TransactionModelViewSet, basename="transaction")
 router.register(
     r"reacurringtransactions",
     ReacurringTransactionModelViewSet,
@@ -51,7 +51,7 @@ router.register(
 )
 router.register(r"networths", NetworthModelViewSet, basename="networth")
 router.register(r"subcategories", SubCategoryModelViewSet, basename="spendingcategory")
-router.register(r"vendors", VendoryModelViewset, basename="vendor")
+router.register(r"vendors", VendorModelViewset, basename="vendor")
 
 
 #### CategoryType => SpendingCategory => Vendor ####

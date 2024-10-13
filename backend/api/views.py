@@ -52,7 +52,7 @@ from .serializers import (
 class SubCategoryModelViewSet(viewsets.ModelViewSet):
     queryset = SubCategory.objects.all()
     serializer_class = SubCategoryModelSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
     @action(detail=False, methods=["get"])
@@ -92,19 +92,19 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
             "Category",
             "SpendingLimit",
             "total",
-            SubCategory=F("SubCategory__SubCategory"),
+            # SubCategory=F("SubCategory__SubCategory"),
         )
         return Response(qs)
 
 
-class VendoryModelViewset(viewsets.ModelViewSet):
+class VendorModelViewset(viewsets.ModelViewSet):
     queryset = Vendor.objects.all()
     serializer_class = VendorySerializer
     permission_classes = [AllowAny]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
-    def get_queryset(self):
-        return Vendor.objects.filter(SubCategory=self.kwargs["SubCategory_pk"])
+    # def get_queryset(self):
+    #     return Vendor.objects.filter(SubCategory=self.kwargs["SubCategory_pk"])
 
 
 class SavingsGoalModelViewset(viewsets.ModelViewSet):
@@ -265,7 +265,7 @@ class DailyInvestmentValueModelViewSet(viewsets.ModelViewSet):
         )
 
 
-class ExpenseModelViewSet(viewsets.ModelViewSet):
+class TransactionModelViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
     permission_classes = [AllowAny]

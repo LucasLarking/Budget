@@ -26,15 +26,15 @@ class SubCategoryModelSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ["id", "Category", "SubCategory", "SpendingLimit"]
+        fields = ["id", "Category", "SpendingLimit"]
         read_only_fields = ["id"]
 
     def validate(self, data):
-        SubCategory = data["SubCategory"]
+        # SubCategory = data["SubCategory"]
         SpendingLimit = data["SpendingLimit"]
-        if SpendingLimit > SubCategory.SpendingLimit:
-            ErrorMsg = f"Category SpendingLimit ({SubCategory}) cannot be greater than SubCategory SpendingLimit ({SubCategory.SpendingLimit})."
-            raise serializers.ValidationError(ErrorMsg)
+        # if SpendingLimit > SubCategory.SpendingLimit:
+        #     ErrorMsg = f"Category SpendingLimit ({SubCategory}) cannot be greater than SubCategory SpendingLimit ({SubCategory.SpendingLimit})."
+        #     raise serializers.ValidationError(ErrorMsg)
         if SpendingLimit <= 0:
             ErrorMsg = "Maximum Spending cannot be less than 0"
             raise serializers.ValidationError(ErrorMsg)
@@ -150,12 +150,12 @@ class TransactionSerializer(serializers.ModelSerializer):
         fields = ["id", "TransactionAmount", "Vendor", "CreatedAt"]
         read_only_fields = ["id", "CreatedAt"]
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation["Vendor"] = (
-            instance.Vendor.Vendor
-        )  # Assuming Vendor has a 'vendor' attribute
-        return representation
+    # def to_representation(self, instance):
+    #     representation = super().to_representation(instance)
+    #     representation["Vendor"] = (
+    #         instance.Vendor.Vendor
+    #     )  # Assuming Vendor has a 'vendor' attribute
+    #     return representation
 
 
 class ReacurringTransactionSerializer(serializers.ModelSerializer):
