@@ -16,6 +16,9 @@ import NewDashboard from "./dashboard/NewDashboard";
 import NewHomePage from "./homepage/NewHomePage";
 import BlockHomePage from "./homepage/BlockHomePage";
 import BlockDashboard from "./homepage/BlockDashboard";
+import TransactionPage from "./transaction/TransactionPage";
+import TransactionForm from "./transaction/TransactionForm";
+import SignUpPage from "./login/SignUpPage";
 
 const router = createBrowserRouter([
     {
@@ -24,11 +27,15 @@ const router = createBrowserRouter([
         children: [
             {index: true, element: <BlockHomePage />},
             {path: "/login", element: <LoginPage />},
+            {path: "/signup", element: <SignUpPage />},
             {path: "/test", element: <TestComponent />},
             {path: "/newdashboard", element: <NewDashboard />},
             {path: "/newhomepage", element: <NewHomePage />},
             {path: "/block", element: <BlockHomePage />},
             {path: "/blockdashboard", element: <BlockDashboard />},
+            {path: "/transaction", element: <TransactionForm />},
+            // {path: "/vendor", element: <VendorForm />},
+            {path: "/addtransaction", element: <TransactionPage />},
         ]
 
     }

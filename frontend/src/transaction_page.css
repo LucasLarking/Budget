@@ -1,0 +1,26 @@
+
+.TransactionPageForm {
+    width: 800px;
+    border: 1px solid black;
+    margin: auto;
+}
+
+.TransactionPageForm .InputContainer {
+    display: flex;
+     flex-direction: column;
+}
+
+.TransactionPageForm input, .TransactionPageForm select {
+    background-color: grey;
+    width: 200px;
+}
+
+.TransactionPageForm button {
+    background-color: aqua;
+    width: 150px;
+}
+
+.TransactionPageForm .submit {
+    background-color: green;
+    margin-top: 20px;
+}
