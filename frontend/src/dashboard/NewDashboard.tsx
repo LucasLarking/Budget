@@ -1,11 +1,14 @@
+import { useState } from "react"
 import ExpenseCategories from "./ExpenseCategories"
 import Expenses_over_time from "./Expenses_over_time"
 import MonthlyBudget from "./MonthlyBudget"
 import MonthlyInvestments from "./MonthlyInvestments"
 import TotalSaved from "./TotalSaved"
 import TransactionsTableComponent from "./TransactionsTableComponent"
+import TransactionForm from "@/transaction/TransactionForm"
 
 const NewDashboard = () => {
+    const [showCreateTransaction, setShowTransaction] = useState<boolean>(false);
     return (
         <>
             <article className="lg:m-12 m-2 ">
@@ -18,9 +21,10 @@ const NewDashboard = () => {
                     <div className="h-80 lg:h-auto  lg:row-span-2 lg:col-span-2"> <ExpenseCategories /> </div>
                     <div className="h-80  lg:h-auto lg:row-span-2 lg:col-span-2 col-span-1 "> <TransactionsTableComponent /> </div>
                 </div>
-
+                <button className="bg-green-950 text-white p-4 px-8"  onClick={() => {setShowTransaction(!showCreateTransaction)}}>Show</button>
 
             </article>
+            {showCreateTransaction && (<TransactionForm closeForm={() => {setShowTransaction(false)}}/>)}
         </>
     )
 }

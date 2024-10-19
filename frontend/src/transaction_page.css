@@ -1,11 +1,11 @@
 
 .TransactionPageForm {
-    width: 800px;
-    border: 1px solid black;
-    margin: auto;
+    /* width: 800px; */
+    /* border: 1px solid black; */
+    /* margin: auto; */
 }
 
-.TransactionPageForm .InputContainer {
+/* .TransactionPageForm .InputContainer {
     display: flex;
      flex-direction: column;
 }
@@ -23,4 +23,15 @@
 .TransactionPageForm .submit {
     background-color: green;
     margin-top: 20px;
+} */
+
+@keyframes animateForm {
+    from {top: 22%; opacity: 0.5;}
+    to {top: 20%; opacity: 1;}
+  }
+
+.animateForm {
+    animation-name: animateForm;
+    animation-duration: 200ms;
+    
 }

@@ -33,7 +33,7 @@ const router = createBrowserRouter([
             {path: "/newhomepage", element: <NewHomePage />},
             {path: "/block", element: <BlockHomePage />},
             {path: "/blockdashboard", element: <BlockDashboard />},
-            {path: "/transaction", element: <TransactionForm />},
+            {path: "/transaction", element: <TransactionForm closeForm={() => {}} />},
             // {path: "/vendor", element: <VendorForm />},
             {path: "/addtransaction", element: <TransactionPage />},
         ]
