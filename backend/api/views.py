@@ -7,7 +7,7 @@ from django.db.models.functions import TruncMonth, TruncDate
 from django.utils import timezone
 from django.shortcuts import render
 from django.db.models import Sum
-
+from django.db.models.functions import TruncDay
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -75,26 +75,36 @@ class SubCategoryModelViewSet(viewsets.ModelViewSet):
 class CategoryModelViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
+
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     @action(detail=False, methods=["get"])
     def category_expenses_sum(self, request):
         now = timezone.now()
         first_day_of_month = datetime(now.year, now.month, 1)
-        qs = Category.objects.annotate(
-            total=Sum(
-                "vendor__transaction__TransactionAmount",
-                filter=Q(vendor__transaction__CreatedAt__gte=first_day_of_month),
-            )
-        ).values(
-            "id",
-            "Category",
-            "SpendingLimit",
-            "total",
-            # SubCategory=F("SubCategory__SubCategory"),
+        qs = Category.objects.filter(user=self.request.user).annotate(
+        total=Sum(
+            "vendor__transaction__TransactionAmount",
+            filter=Q(vendor__transaction__CreatedAt__gte=first_day_of_month),
         )
-        return Response(qs)
+    )
+
+        # Transforming the queryset into a list of dictionaries
+        result = [
+            {
+                "category": category.Category,  # Use the category name
+                "total": category.total or 0,    # Set total to 0 if None
+            }
+            for category in qs
+        ]
+
+        return Response(result)
 
 
 class VendorModelViewset(viewsets.ModelViewSet):
@@ -103,9 +113,11 @@ class VendorModelViewset(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
-    # def get_queryset(self):
-    #     return Vendor.objects.filter(SubCategory=self.kwargs["SubCategory_pk"])
-
+    def get_queryset(self):
+        return Vendor.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class SavingsGoalModelViewset(viewsets.ModelViewSet):
     queryset = SavingsGoal.objects.all()
@@ -268,9 +280,32 @@ class DailyInvestmentValueModelViewSet(viewsets.ModelViewSet):
 class TransactionModelViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
+    def get_queryset(self):
+        return Transaction.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+    
+    @action(detail=False, methods=["GET"])
+    def monthly_expenses(self, request):
+        today = timezone.now().date()
+        first_day_of_month = today.replace(day=1)
+        queryset = self.get_queryset().filter(CreatedAt__gte=first_day_of_month)
+
+        # Annotate by day and sum the transaction amounts per day
+        daily_totals = queryset.annotate(day=TruncDay('CreatedAt')).values('day').annotate(total_expense=Sum('TransactionAmount')).order_by('day')
+
+        # Format the day as "Jan 1" and return the data
+        formatted_expenses = [
+            {"day": datetime.strptime(str(item['day']), "%Y-%m-%d").strftime("%b %d"), "Sammanlagda Utgifter": item["total_expense"]}
+            for item in daily_totals
+        ]
+
+        return Response(formatted_expenses)
+    
     @action(detail=False, methods=["get"])
     def recent_expenses(self, request):
         limit = request.query_params.get("limit", 10)
@@ -278,14 +313,17 @@ class TransactionModelViewSet(viewsets.ModelViewSet):
             limit = int(limit)
         except ValueError:
             return Response({"error": "Limit must be an integer"}, status=400)
+        
+        now = timezone.now()
+        start_of_month = now.replace(day=1)
 
-        recent_transactions = self.queryset.order_by("-CreatedAt")[:limit]
+        recent_transactions = self.queryset.filter(user=request.user).filter(CreatedAt__gte=start_of_month).order_by("-CreatedAt")[:limit]
         grouped_recent_transactions = recent_transactions.values(
-            Id=F("id"),
-            ExpenseCost=F("Transaction"),
-            SubCategory=F("Vendor__SubCategory__SubCategory"),
-            Category=F("Vendor__SubCategory__Category__Category"),
-            TransactionCreatedAt=F("CreatedAt"),
+            transactionId=F("id"),
+            transactionAmount=F("TransactionAmount"),
+            vendor=F("Vendor__Vendor"),
+            category=F("Vendor__Category__Category"),
+            createdAt=F("CreatedAt"),
         )
         return Response(grouped_recent_transactions)
 

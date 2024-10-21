@@ -1,5 +1,5 @@
 from django.db import models
-
+from backend import settings
 # Create your models here.
 
 
@@ -17,7 +17,8 @@ class Category(models.Model):
     # SubCategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     Category = models.CharField(max_length=255)
     SpendingLimit = models.IntegerField()
-
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    
     def __str__(self) -> str:
         return f"{self.Category}"
 
@@ -27,7 +28,7 @@ class Vendor(models.Model):
     Vendor = models.CharField(max_length=255)
     Category = models.ForeignKey(Category, on_delete=models.CASCADE)
     SpendingLimit = models.IntegerField(null=True, blank=True)
-   
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     def __str__(self) -> str:
         return f"{self.Vendor} ({self.Category.Category})"
 
@@ -99,6 +100,7 @@ class Transaction(models.Model):
     TransactionAmount = models.IntegerField()
     Vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, null=True, blank=True)
     CreatedAt = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"{self.TransactionAmount}kr på"
