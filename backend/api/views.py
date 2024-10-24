@@ -1,6 +1,7 @@
 import calendar
 from datetime import timedelta
 from datetime import datetime
+from datetime import date
 
 from django.db.models import F, Sum, Max, Q
 from django.db.models.functions import TruncMonth, TruncDate
@@ -12,6 +13,8 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action
+from rest_framework.views import APIView
+
 
 from django.conf import settings
 # settings.AUTH_USER_MODEL
@@ -100,6 +103,7 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
             {
                 "category": category.Category,  # Use the category name
                 "total": category.total or 0,    # Set total to 0 if None
+                "id": category.id
             }
             for category in qs
         ]
@@ -110,7 +114,7 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
 class VendorModelViewset(viewsets.ModelViewSet):
     queryset = Vendor.objects.all()
     serializer_class = VendorySerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
     def get_queryset(self):
@@ -122,22 +126,25 @@ class VendorModelViewset(viewsets.ModelViewSet):
 class SavingsGoalModelViewset(viewsets.ModelViewSet):
     queryset = SavingsGoal.objects.all()
     serializer_class = SavingsGoalSerializer
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
 
 class InvestmentGoalModelViewset(viewsets.ModelViewSet):
     queryset = InvestmentGoal.objects.all()
     serializer_class = InvestmentGoalSerializer
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
 
 class IncomeSourceModelViewset(viewsets.ModelViewSet):
     queryset = IncomeSource.objects.all()
     serializer_class = IncomeSourceSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     @action(detail=False, methods=["get"])
     def income_left(self, request):
@@ -166,14 +173,14 @@ class IncomeSourceModelViewset(viewsets.ModelViewSet):
 class InvestmentNameModelViewSet(viewsets.ModelViewSet):
     queryset = InvestmentName.objects.all()
     serializer_class = InvestmentNameSerializer
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
 
 class InvestmentPurchaseModelViewSet(viewsets.ModelViewSet):
     queryset = InvestmentPurchase.objects.all()
     serializer_class = InvestmentPurchaseSerializer
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
     @action(detail=False, methods=["get"])
@@ -221,14 +228,14 @@ class InvestmentPurchaseModelViewSet(viewsets.ModelViewSet):
 class ReacurringInvestmentPurchaseModelViewSet(viewsets.ModelViewSet):
     queryset = ReacurringInvestmentPurchase.objects.all()
     serializer_class = ReacurringInvestmentPurchaseSerializer
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
 
 class DailyInvestmentValueModelViewSet(viewsets.ModelViewSet):
     queryset = DailyInvestmentValue.objects.all()
     serializer_class = DailyInvestmentValueSerializer
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
     @action(detail=False, methods=["get"])
@@ -347,7 +354,7 @@ class NetworthModelViewSet(viewsets.ModelViewSet):
     queryset = NetWorth.objects.all()
     serializer_class = NetWorthSerializer
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
-    permission_classes = [AllowAny]
+    # permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=["get"])
     def monthly_networth(self, request):
@@ -382,16 +389,43 @@ class NetworthModelViewSet(viewsets.ModelViewSet):
 class ReacurringTransactionModelViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = ReacurringTransactionSerializer
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
 
 class MonthlyExpenseSummary(viewsets.ViewSet):
     queryset = Transaction.objects.all()
     serializer_class = ReacurringTransaction
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     http_method_names = ["option", "head", "get", "post", "put", "delete"]
 
     def list(self, request):
         one_month_ago = timezone.now() - timedelta(days=30)
         expenses = Transaction.objects.filter(created_at__gte=one_month_ago)
+
+
+class IncomeSummaryView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        # Calculate total income
+        total_income = IncomeSource.objects.filter(user=request.user).aggregate(total=Sum('Value'))['total'] or 0
+
+        # Get the current month and year
+        current_month = date.today().month
+        current_year = date.today().year
+
+        # Calculate total transactions for the current month
+        total_transactions = Transaction.objects.filter(
+            user=request.user,
+            CreatedAt__year=current_year,
+            CreatedAt__month=current_month
+        ).aggregate(total=Sum('TransactionAmount'))['total'] or 0
+
+        # Calculate final result (total income - total transactions)
+        result = total_income - total_transactions
+
+        return Response({
+            'total_income': total_income,
+            'total_transactions': total_transactions,
+            'net_income': result
+        })

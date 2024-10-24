@@ -15,6 +15,7 @@ from .views import (
     DailyInvestmentValueModelViewSet,
     TransactionModelViewSet,
     ReacurringTransactionModelViewSet,
+    IncomeSummaryView
 )
 
 router = DefaultRouter()
@@ -66,6 +67,7 @@ router.register(r"vendors", VendorModelViewset, basename="vendor")
 # The API URLs are now determined automatically by the router
 urlpatterns = [
     path("", include(router.urls)),  # Include the main router
+    path('income-summary/', IncomeSummaryView.as_view(), name='income-summary'),
     # path('', include(CategoryTpeRouter.urls)),  # Include the nested router
     # path('', include(SpendingCategory_router.urls)) # Second level nested router (Vendor)
 ]
